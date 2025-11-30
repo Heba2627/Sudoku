@@ -8,7 +8,7 @@ Main -> Main : readCSV(filepath)
 Main -> CheckerFactory : getChecker(mode)
 
 alt mode == 0
-    CheckerFactory --> OneThreadChecker : return instance
+    CheckerFactory --> Main : OneThreadChecker
     Main -> OneThreadChecker : verify(board)
     OneThreadChecker -> OneThreadChecker : checkRows()
     OneThreadChecker -> OneThreadChecker : checkColumns()
@@ -16,7 +16,7 @@ alt mode == 0
     OneThreadChecker --> Main : "Valid" or "Invalid"
 
 else mode == 3
-    CheckerFactory --> ThreeThreadChecker : return instance
+    CheckerFactory --> Main : ThreeThreadChecker
     Main -> ThreeThreadChecker : verify(board)
 
     group Thread t1
@@ -34,7 +34,7 @@ else mode == 3
     ThreeThreadChecker --> Main : "Valid" or "Invalid"
 
 else mode == 27
-    CheckerFactory --> TwentySevenThreadChecker : return instance
+    CheckerFactory --> Main : TwentySevenThreadChecker
     Main -> TwentySevenThreadChecker : verify(board)
 
     loop 9 row threads
