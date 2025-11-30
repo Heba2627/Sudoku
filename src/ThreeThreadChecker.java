@@ -8,6 +8,7 @@ public class ThreeThreadChecker extends Checker {
                 throw new RuntimeException(e);
             }
         });
+
         Thread t2 = new Thread(() -> {
             try {
                 checkColumns(board);
@@ -15,6 +16,7 @@ public class ThreeThreadChecker extends Checker {
                 throw new RuntimeException(e);
             }
         });
+
         Thread t3 = new Thread(() -> {
             try {
                 checkBoxes(board);
@@ -22,11 +24,11 @@ public class ThreeThreadChecker extends Checker {
                 throw new RuntimeException(e);
             }
         });
+
         t1.start(); Thread.sleep(1000);  t1.join();
         t2.start(); Thread.sleep(1000); t2.join();
         t3.start(); Thread.sleep(1000); t3.join();
         if(state) System.out.println("Valid");
-
     }
 
 }

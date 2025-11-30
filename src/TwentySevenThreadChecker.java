@@ -5,6 +5,7 @@ public class TwentySevenThreadChecker extends Checker{
     @Override
     public void verify(int[][] board) throws InterruptedException {
         Thread[] threads = new Thread[27];
+
         int idx = 0;
         for (int i = 0; i < 9; i++) {
             int row = i;
@@ -16,6 +17,7 @@ public class TwentySevenThreadChecker extends Checker{
                 }
             });
         }
+
         for (int i = 0; i < 9; i++) {
             int col = i;
             threads[idx++] = new Thread(() -> {
@@ -26,6 +28,7 @@ public class TwentySevenThreadChecker extends Checker{
                 }
             });
         }
+
         for (int i = 0; i < 9; i++) {
             int box = i;
             threads[idx++] = new Thread(() -> {
@@ -36,6 +39,7 @@ public class TwentySevenThreadChecker extends Checker{
                 }
             });
         }
+
         for (Thread t : threads){ t.start();   t.join();}
         if(state) System.out.println("Valid");
     }
