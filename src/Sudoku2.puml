@@ -2,21 +2,26 @@
 title Sudoku Main Execution Flow
 
 actor User
+Activate User
+Activate Main
 User -> Main : run(args)
 
 Main -> Main : readCSV(filepath)
 Main -> CheckerFactory : getChecker(mode)
+Activate CheckerFactory
 
 alt mode == 0
     CheckerFactory --> Main : OneThreadChecker
     Main -> OneThreadChecker : verify(board)
+    Activate OneThreadChecker
     OneThreadChecker -> OneThreadChecker : checkRows()
     OneThreadChecker -> OneThreadChecker : checkColumns()
     OneThreadChecker -> OneThreadChecker : checkBoxes()
     OneThreadChecker --> Main : "Valid" or "Invalid"
-
+    deactivate OneThreadChecker
 else mode == 3
     CheckerFactory --> Main : ThreeThreadChecker
+    Activate ThreeThreadChecker
     Main -> ThreeThreadChecker : verify(board)
 
     group Thread t1
@@ -32,10 +37,12 @@ else mode == 3
     end
 
     ThreeThreadChecker --> Main : "Valid" or "Invalid"
-
+    deactivate ThreeThreadChecker
 else mode == 27
     CheckerFactory --> Main : TwentySevenThreadChecker
     Main -> TwentySevenThreadChecker : verify(board)
+    Activate TwentySevenThreadChecker
+      deactivate CheckerFactory
 
     loop 9 row threads
         TwentySevenThreadChecker -> TwentySevenThreadChecker : checkRow()
@@ -51,6 +58,8 @@ else mode == 27
 
     TwentySevenThreadChecker --> Main : "Valid" or "Invalid"
 end
-
+deactivate  TwentySevenThreadChecker
 Main --> User : print result
+deactivate Main
+deactivate User
 @enduml
