@@ -1,0 +1,42 @@
+@startuml
+'https://plantuml.com/class-diagram
+hide empty methods
+hide empty attributes
+
+interface SudokuChecker{
++verify(int[][] board) : void
+}
+abstract class Checker{
+#state : boolean
+#flag : boolean
+#checkRows(int[][] board) : void
+#checkRow(int[][] board, int idx) : void
+#checkColumns(int[][] board) : void
+#checkColumn(int[][] board, int idx) : void
+#checkBoxes(int[][] board) : void
+#checkBox(int[][] board, int idx) : void
+}
+class CheckerFactory{
++ <u>getChecker(int mode) : SudokuChecker </u>
+}
+class OneThreadChecker{
++ verify(int[][] board) : void {redefines Checker::verify}
+}
+class ThreeThreadChecker{
++ verify(int[][] board) : void {redefines Checker::verify}
+}
+
+class TwentySevenThreadChecker{
++ verify(int[][] board) : void {redefines Checker::verify}
+}
+
+Checker ..|> SudokuChecker
+OneThreadChecker --|> Checker
+ThreeThreadChecker --|> Checker
+TwentySevenThreadChecker --|> Checker
+CheckerFactory -- OneThreadChecker
+CheckerFactory -- ThreeThreadChecker
+CheckerFactory -- TwentySevenThreadChecker
+
+
+@enduml

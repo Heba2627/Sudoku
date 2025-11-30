@@ -1,0 +1,56 @@
+@startuml
+title Sudoku Main Execution Flow
+
+actor User
+User -> Main : run(args)
+
+Main -> Main : readCSV(filepath)
+Main -> CheckerFactory : getChecker(mode)
+
+alt mode == 0
+    CheckerFactory --> OneThreadChecker : return instance
+    Main -> OneThreadChecker : verify(board)
+    OneThreadChecker -> OneThreadChecker : checkRows()
+    OneThreadChecker -> OneThreadChecker : checkColumns()
+    OneThreadChecker -> OneThreadChecker : checkBoxes()
+    OneThreadChecker --> Main : "Valid" or "Invalid"
+
+else mode == 3
+    CheckerFactory --> ThreeThreadChecker : return instance
+    Main -> ThreeThreadChecker : verify(board)
+
+    group Thread t1
+        ThreeThreadChecker -> ThreeThreadChecker : checkRows()
+    end
+
+    group Thread t2
+        ThreeThreadChecker -> ThreeThreadChecker : checkColumns()
+    end
+
+    group Thread t3
+        ThreeThreadChecker -> ThreeThreadChecker : checkBoxes()
+    end
+
+    ThreeThreadChecker --> Main : "Valid" or "Invalid"
+
+else mode == 27
+    CheckerFactory --> TwentySevenThreadChecker : return instance
+    Main -> TwentySevenThreadChecker : verify(board)
+
+    loop 9 row threads
+        TwentySevenThreadChecker -> TwentySevenThreadChecker : checkRow()
+    end
+
+    loop 9 column threads
+        TwentySevenThreadChecker -> TwentySevenThreadChecker : checkColumn()
+    end
+
+    loop 9 box threads
+        TwentySevenThreadChecker -> TwentySevenThreadChecker : checkBox()
+    end
+
+    TwentySevenThreadChecker --> Main : "Valid" or "Invalid"
+end
+
+Main --> User : print result
+@enduml
