@@ -6,11 +6,13 @@ public abstract class Checker implements SudokuChecker{
     protected boolean state=true;
     protected boolean flag=false;
     protected boolean is27;
+
     protected void checkRows(int[][] board) throws InterruptedException {
         for(int i=0;i<9;i++) {
             checkRow(board,i);
         }
     }
+
     protected void checkRow(int[][] board, int idx) throws InterruptedException {
         boolean[] exist= new boolean[10];
         List<Integer> duplicates= new ArrayList<>();
@@ -33,11 +35,13 @@ public abstract class Checker implements SudokuChecker{
             if(is27) Thread.sleep(1000);
         }
     }
+
     protected void checkColumns(int[][] board) throws InterruptedException {
         for(int i=0;i<9;i++) {
             checkColumn(board,i);
         }
     }
+
     protected void checkColumn(int[][] board, int idx) throws InterruptedException {
         boolean[] exist= new boolean[10];
         List<Integer> duplicates= new ArrayList<>();
@@ -58,11 +62,13 @@ public abstract class Checker implements SudokuChecker{
             if(is27) Thread.sleep(1000);
         }
     }
+
     protected void checkBoxes(int[][] board) throws InterruptedException {
         for(int i=0;i<9;i++){
             checkBox(board,i);
         }
     }
+
     protected void checkBox(int[][] board, int idx) throws InterruptedException {
         int row=(idx/3)*3;
         int col=(idx%3)*3;
@@ -87,6 +93,6 @@ public abstract class Checker implements SudokuChecker{
             System.out.println("Box " + (idx+1) + ", #" + value + ", " + locations);
             if(is27) Thread.sleep(1000);
         }
-
     }
+
 }
